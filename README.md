@@ -18,22 +18,18 @@
 
 ## 📌 Overview
 
-Offline IoT message-broker configuration & ACL auditor (Mosquitto, EMQX, HiveMQ, VerneMQ, NATS)
+OMqttX is an offline IoT message-broker configuration and ACL auditor for Mosquitto, EMQX, HiveMQ CE, VerneMQ, and NATS. It reviews listeners, auth, TLS, bridges, password files, and ACL semantics (including a can-user-write-topic simulator). Secrets are masked; reports include score/grade and TXT/MD/JSON/CSV/SARIF export.
 
 ---
 
 ## ✨ Features
 
-- Mosquitto auditor — listeners, per_listener_settings, include_dir, anonymous, TLS / websockets, bridges, limits
-- password_file auditor — plaintext, $6$ vs $7$ PBKDF2
-- ACL semantic analyser (wildcards, %u / %c misuse, $SYS, overlaps) + "can user U write topic T" simulator
-- EMQX 5 emqx.conf (HOCON) — authn / authz, dashboard, cookie
-- HiveMQ CE config.xml (entities refused) + allow-all extension
-- VerneMQ vernemq.conf and NATS nats-server.conf auditors
-- CWE + MITRE ATT&CK (Enterprise & ICS) mapping
-- Score / grade, TXT / MD / JSON / CSV / SARIF exports
-- Offline --root discovery, hardened templates, --demo
-- Read-only; secrets are masked in every output
+- Mosquitto auditor: listeners, per_listener_settings, include_dir, anonymous, TLS/websockets, bridges, limits
+- password_file audit (plaintext vs `$6$`/`$7$` PBKDF2) and ACL semantic analysis with wildcards / `%u` / `%c` / `$SYS`
+- `--simulate USER ACTION TOPIC` ACL simulator with optional `--client-id`
+- EMQX 5 HOCON, HiveMQ CE config.xml, VerneMQ, and NATS nats-server.conf auditors
+- CWE + MITRE ATT&CK (Enterprise & ICS) mapping; offline `--root` discovery; hardened templates
+- Score/grade, multi-format export, `--demo` and CI severity gates
 
 ---
 
@@ -47,7 +43,10 @@ Offline IoT message-broker configuration & ACL auditor (Mosquitto, EMQX, HiveMQ,
 ## 🚀 Usage
 
 ```bash
-./OMqttX
+./OMqttX --mosquitto mosquitto.conf --acl aclfile --scan
+./OMqttX --simulate alice write sensors/# --format json -o mqtt.json
+./OMqttX --demo --fail-on high
+./OMqttX --help
 ```
 
 ---
